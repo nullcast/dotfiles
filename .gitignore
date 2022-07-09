@@ -1,0 +1,7 @@
+.vscode/*
+!setting.json
+
+.bin/.config/fish/*
+!config.fish
+
+.bin/.config/gcloud

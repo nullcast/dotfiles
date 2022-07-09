@@ -1,0 +1,23 @@
+cask_args appdir: "/Applications"
+
+brew "anyenv"
+brew "fish"
+brew "git"
+brew "git-secrets"
+brew "jq"
+brew "tree"
+brew "watch"
+brew "wget"
+tap "sanemat/font"
+brew "ricty", args: ["with-powerline"]
+
+cask "google-cloud-sdk"
+cask "appcleaner"
+cask "aws-vault"
+cask "docker"
+cask "google-chrome"
+cask "notion"
+cask "rectangle"
+cask "slack"
+cask "visual-studio-code"
+cask "zoom"
