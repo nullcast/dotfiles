@@ -10,6 +10,9 @@ brew "watch"
 brew "wget"
 tap "sanemat/font"
 brew "ricty", args: ["with-powerline"]
+brew "mecab"
+brew "mecab-ipadic"
+brew "leveldb"
 
 cask "google-cloud-sdk"
 cask "appcleaner"
