@@ -9,8 +9,12 @@
 	ignorecase = false
 	quotepath = false
 	safecrlf = true
+	symlinks = true
 [credential]
 	helper = osxkeychain
 [init]
 	defaultBranch = main
 	templatedir = ~/.git-templates/git-secrets
+[user]
+	name = nullcast
+	email = masaki.kurosawa@lpconsulting.jp
