@@ -1,5 +1,9 @@
 cask_args appdir: "/Applications"
 
+tap "sanemat/font"
+tap "homebrew/cask"
+tap "bagonyi/homebrew-formulae"
+
 brew "anyenv"
 brew "fish"
 brew "git"
@@ -8,11 +12,10 @@ brew "jq"
 brew "tree"
 brew "watch"
 brew "wget"
-tap "sanemat/font"
 brew "ricty", args: ["with-powerline"]
 brew "mecab"
 brew "mecab-ipadic"
-brew "leveldb"
+brew "leveldb@1.22"
 
 cask "google-cloud-sdk"
 cask "appcleaner"
