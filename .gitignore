@@ -5,3 +5,4 @@
 !config.fish
 
 .bin/.config/gcloud
+.bin/.config/configstore
