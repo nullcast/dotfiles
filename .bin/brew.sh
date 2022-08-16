@@ -20,3 +20,12 @@ sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/Java
 # Install font
 cp -f /opt/homebrew/Cellar/ricty/4.1.1/share/fonts/Ricty*.ttf ~/Library/Fonts/
 fc-cache -vf
+
+# Minikube
+sudo mkdir -p /etc/resolver
+cat << EOF | sudo tee /etc/resolver/minikube-test
+domain minikube.local
+nameserver $(minikube ip)
+search_order 1
+timeout 5
+EOF

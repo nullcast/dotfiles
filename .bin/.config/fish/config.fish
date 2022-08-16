@@ -35,7 +35,9 @@ echo 'Init LIB'
 set -x LDFLAGS "-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig"
-set -x LIBRARY_PATH "$LIBRARY_PATH:"(brew --prefix)"/lib"
+set -x 
+
+ "$LIBRARY_PATH:"(brew --prefix)"/lib"
 set -x CPATH "$CPATH:"(brew --prefix)"/include"
 
 # Java
@@ -44,3 +46,10 @@ jenv add (/usr/libexec/java_home -v "18")
 jenv add (/usr/libexec/java_home -v "1.8")
 set -x JAVA_HOME (/usr/libexec/java_home -v "1.8")
 set -x PATH $PATH $JAVA_HOME/bin
+
+# Pippetter
+set -x PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+set -x PUPPETEER_EXECUTABLE_PATH (which chromium)
+
+# Node
+# set -x NODE_OPTIONS --openssl-legacy-provider
