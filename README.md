@@ -10,7 +10,7 @@ This repository contains scripts to set macOS.
 
 ## Required
 
-- [macOS](https://www.apple.com/jp/macos/big-sur/) - v11.4
+- [macOS](https://www.apple.com/jp/macos/monterey/) - v12.4
 
 &emsp;
 
