@@ -54,3 +54,9 @@ set -x PATH $PATH /opt/homebrew/opt/mysql-client/bin
 
 # Node
 # set -x NODE_OPTIONS --openssl-legacy-provider
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+
