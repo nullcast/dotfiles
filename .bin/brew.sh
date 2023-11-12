@@ -18,8 +18,8 @@ sudo ln -nfs /opt/homebrew/Cellar/leveldb@1.22/1.22 /opt/homebrew/opt/leveldb
 sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 
 # Install font
-cp -f /opt/homebrew/Cellar/ricty/4.1.1/share/fonts/Ricty*.ttf ~/Library/Fonts/
-fc-cache -vf
+#cp -f /opt/homebrew/Cellar/ricty/4.1.1/share/fonts/Ricty*.ttf ~/Library/Fonts/
+#fc-cache -vf
 
 # Minikube
 sudo mkdir -p /etc/resolver
