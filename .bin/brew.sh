@@ -8,6 +8,7 @@ fi
 # Software update
 sudo softwareupdate --install-rosetta
 
+brew update
 brew developer on
 brew extract --force --version=1.22 leveldb bagonyi/formulae
 brew bundle --global

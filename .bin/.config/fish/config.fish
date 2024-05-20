@@ -32,9 +32,9 @@ set -x CLOUDSDK_PYTHON_SITEPACKAGES 1
 
 # LIB
 echo 'Init LIB'
-set -x LDFLAGS "-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
-set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig"
+set -x LDFLAGS "-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib" "-L/opt/homebrew/opt/openal-soft/lib"
+set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include" "-I/opt/homebrew/opt/openal-soft/include"
+set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig" "/opt/homebrew/opt/openal-soft/lib/pkgconfig"
 set -x LIBRARY_PATH "$LIBRARY_PATH:"(brew --prefix)"/lib"
 set -x CPATH "$CPATH:"(brew --prefix)"/include"
 
@@ -52,6 +52,9 @@ set -x PUPPETEER_EXECUTABLE_PATH (which chromium)
 # Mysql client 
 set -x PATH $PATH /opt/homebrew/opt/mysql-client/bin
 
+# CMake
+set -x CMAKE_PREFIX_PATH $(brew --prefix)
+
 # Node
 # set -x NODE_OPTIONS --openssl-legacy-provider
 
@@ -60,3 +63,4 @@ set -x PATH $PATH /opt/homebrew/opt/mysql-client/bin
 eval /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
+eval (/opt/homebrew/bin/mise activate fish)
