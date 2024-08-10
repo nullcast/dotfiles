@@ -1,0 +1,4 @@
+[tools]
+java = "18.0"
+python = "3.10.5"
+node = "18.5.0"

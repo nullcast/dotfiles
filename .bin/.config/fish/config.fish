@@ -58,9 +58,14 @@ set -x CMAKE_PREFIX_PATH $(brew --prefix)
 # Node
 # set -x NODE_OPTIONS --openssl-legacy-provider
 
+eval (/opt/homebrew/bin/mise activate fish)
+
+# direnv
+eval (direnv hook fish)
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda "shell.fish" "hook" $argv | source
+if test -f /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda
+    eval /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda "shell.fish" "hook" $argv | source
+end
 # <<< conda initialize <<<
-
-eval (/opt/homebrew/bin/mise activate fish)
