@@ -1,34 +1,5 @@
 #!/usr/bin/env fish
 
-function remove_conda_init
-    set config_file ~/.config/fish/config.fish
-    set temp_file (mktemp)
-
-    # Conda initialize のブロックと直前直後の空行のみを削除
-    awk 'BEGIN {p=1; in_block=0}
-        /^# >>> conda initialize >>>/ {
-            if (p && NR > 1 && prev_line == "") print_prev=0;
-            in_block=1;
-            next;
-        }
-        /^# <<< conda initialize <<</ {
-            in_block=0;
-            getline;
-            next;
-        }
-        p && !in_block {
-            if (print_prev) print prev_line;
-            prev_line=$0;
-            print_prev=1;
-        }
-        END {
-            if (!in_block && print_prev && NR > 1 && prev_line != "") print prev_line;
-        }' $config_file > $temp_file
-
-    # 一時ファイルを元のファイルに上書き
-    mv $temp_file $config_file
-end
-
 function remove_path
     set -l target_path $argv[1]
     set -l new_path
@@ -87,8 +58,6 @@ function update_mise_conda
         if test -L $conda_link
             rm $conda_link
         end
-
-        remove_conda_init
 
         # Conda 関連の環境変数をクリア
         set -e CONDA_ENVS_PATH
