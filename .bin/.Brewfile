@@ -6,7 +6,6 @@ tap "bagonyi/homebrew-formulae"
 tap "homebrew/cask-versions"
 tap "weaveworks/tap"
 
-brew "anyenv"
 brew "fish"
 brew "git"
 brew "git-secrets"

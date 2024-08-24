@@ -9,10 +9,6 @@ function fish_prompt
     powerline-shell --shell bare $status
 end
 
-# AnyEnv
-echo 'Init Anyenv'
-eval (anyenv init - fish | source)
-
 echo 'Init GCP'
 # The next line updates PATH for the Google Cloud SDK.
 if test -f ~/google-cloud-sdk/path.fish.inc
@@ -26,8 +22,8 @@ end
 
 # GCloud
 echo 'Init GCloud'
-set -x CLOUDSDK_PYTHON ~/.anyenv/envs/pyenv/shims/python
-set -x CLOUDSDK_BQ_PYTHON ~/.anyenv/envs/pyenv/shims/python
+set -x CLOUDSDK_PYTHON (which python)
+set -x CLOUDSDK_BQ_PYTHON (which python)
 set -x CLOUDSDK_PYTHON_SITEPACKAGES 1
 
 # LIB
@@ -37,13 +33,6 @@ set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include" "
 set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig" "/opt/homebrew/opt/openal-soft/lib/pkgconfig"
 set -x LIBRARY_PATH "$LIBRARY_PATH:"(brew --prefix)"/lib"
 set -x CPATH "$CPATH:"(brew --prefix)"/include"
-
-# Java
-echo 'Init Java'
-jenv add (/usr/libexec/java_home -v "18")
-jenv add (/usr/libexec/java_home -v "1.8")
-set -x JAVA_HOME (/usr/libexec/java_home -v "1.8")
-set -x PATH $PATH $JAVA_HOME/bin
 
 # Pippetter
 set -x PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
@@ -63,9 +52,24 @@ eval (/opt/homebrew/bin/mise activate fish)
 # direnv
 eval (direnv hook fish)
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda
-    eval /Users/mkurosawa/.anyenv/envs/pyenv/versions/miniforge3-22.9.0-3/bin/conda "shell.fish" "hook" $argv | source
+# 初期設定時に現在の Python バージョンを環境変数に保存
+function save_python_version
+    set -l python_version (mise current | grep 'python' | awk '{print $2}')
+    set -gx PREV_PYTHON_VERSION $python_version
 end
-# <<< conda initialize <<<
+save_python_version
+
+# update_mise_conda.fish を読み込む
+source ~/.config/fish/.update_mise_conda.fish
+
+function check_and_update_conda_version --on-event fish_prompt
+    set -l current_python_version (mise current | grep 'python' | awk '{print $2}')
+
+    # 現在の Python バージョンと以前のバージョンを比較
+    if test "$current_python_version" != "$PREV_PYTHON_VERSION"
+        update_mise_conda
+        set -gx PREV_PYTHON_VERSION $current_python_version
+    end
+end
+
+# pyenvのminiforgeのcondaの設定

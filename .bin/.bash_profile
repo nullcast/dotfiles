@@ -24,19 +24,9 @@ if [ "$(which tsc)" == "" ]; then
   export PATH="$(npm bin -g):$PATH"
 fi
 
-# Set anyenv
-if [ "$(which anyenv)" != "" ]; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init -)"
-fi
 # Set aws-completion
 if [ "$(which aws_completer)" != "" ]; then
   complete -C aws_completer aws
-fi
-
-# Set terraform-completion
-if [ "$(which terraform)" != "" ]; then
-  complete -C $HOME/.anyenv/envs/tfenv/versions/1.0.0/terraform terraform
 fi
 
 # Set bash-completion

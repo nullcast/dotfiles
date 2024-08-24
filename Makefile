@@ -16,7 +16,3 @@ defaults:
 # Install macOS applications.
 brew:
 	.bin/brew.sh
-
-# anyenv
-anyenv:
-	.bin/anyenv.sh

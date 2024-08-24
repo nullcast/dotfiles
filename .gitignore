@@ -2,7 +2,9 @@
 !setting.json
 
 .bin/.config/fish/*
-!config.fish
+!*.fish
+!conf.d
 
 .bin/.config/gcloud
 .bin/.config/configstore
+.bin/.config/expressvpn
