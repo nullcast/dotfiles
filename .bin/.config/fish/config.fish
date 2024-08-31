@@ -76,13 +76,13 @@ end
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-if test -f /Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin/conda
-    eval /Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin/conda "shell.fish" "hook" $argv | source
+if test -f /Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/envs/oripa/bin/conda
+    eval /Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/envs/oripa/bin/conda "shell.fish" "hook" $argv | source
 else
-    if test -f "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/fish/conf.d/conda.fish"
-        . "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/fish/conf.d/conda.fish"
+    if test -f "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/envs/oripa/etc/fish/conf.d/conda.fish"
+        . "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/envs/oripa/etc/fish/conf.d/conda.fish"
     else
-        set -x PATH "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin" $PATH
+        set -x PATH "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/envs/oripa/bin" $PATH
     end
 end
 # <<< conda initialize <<<
