@@ -36,7 +36,7 @@ function update_mise_conda
         fish_add_path $HOME/.local/share/mise/installs/python/$conda_version[1]/bin
         fish_add_path $HOME/.local/share/mise/installs/python/$conda_version[1]/condabin
 
-        conda init fish
+        #conda init fish # これをするとbaseがoripaになる
         source ~/.config/fish/config.fish
 
         set -gx FORGE_PATH (dirname (dirname (which conda)))

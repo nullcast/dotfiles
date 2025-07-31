@@ -58,3 +58,19 @@ if [ -f '/Users/mkurosawa/google-cloud-sdk/path.bash.inc' ]; then . '/Users/mkur
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/mkurosawa/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/mkurosawa/google-cloud-sdk/completion.bash.inc'; fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/profile.d/conda.sh" ]; then
+        . "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

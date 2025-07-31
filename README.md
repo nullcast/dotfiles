@@ -19,5 +19,7 @@ This repository contains scripts to set macOS.
 Set macOS.
 
 ```shell
+$ brew tap-new my/casks
+$ ln -s (brew --repo my/casks)/* .bin/.config/brew
 $ cd ~/dotfiles && make
 ```
