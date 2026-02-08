@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "~/.local/share/mise/shims/python",
+    "makefile.configureOnOpen": true,
+  },
+}
