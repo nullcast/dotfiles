@@ -4,9 +4,11 @@ set -x PATH /bin $PATH
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local/opt/openssl/bin $PATH
 
-# POWERLINE SHELL
+# POWERLINE GO
 function fish_prompt
-    powerline-shell --shell bare $status
+    # -error: 直前コマンドの終了コードで色などを変える
+    # -shell bare: fish 向けにプロンプト文字列だけ出す
+    powerline-go -error $status -shell bare
 end
 
 echo 'Init GCP'
