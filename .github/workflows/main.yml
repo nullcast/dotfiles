@@ -1,25 +1,32 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Dotfiles CI
 
-# Controls when the action will run.
+# Lint the dotfiles on every push/PR.
+# (Running the full `make` would need sudo and would install GUI apps,
+#  so CI only validates that the scripts and fish configs are well-formed.)
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
+  pull_request:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  lint:
     runs-on: macos-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Set MacOS.
-        run: make
+      - name: Lint shell scripts (errors only)
+        run: |
+          brew install shellcheck
+          shellcheck --severity=error \
+            .bin/init.sh .bin/link.sh .bin/defaults.sh .bin/brew.sh \
+            tools/*.sh
+
+      - name: Check fish syntax
+        run: |
+          brew install fish
+          status=0
+          while IFS= read -r f; do
+            echo "fish --no-execute $f"
+            fish --no-execute "$f" || status=1
+          done < <(find .bin/.config/fish -name '*.fish')
+          exit $status

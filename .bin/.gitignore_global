@@ -235,3 +235,5 @@ override.tf.json
 terraform.rc
 
 .terraform.lock.hcl
+
+**/.claude/settings.local.json

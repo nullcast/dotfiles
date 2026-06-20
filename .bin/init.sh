@@ -15,4 +15,4 @@ xcode-select --install > /dev/null
 softwareupdate --install-rosetta --agree-to-license
 
 # Install brew
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh > /dev/null
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

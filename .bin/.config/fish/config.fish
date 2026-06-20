@@ -1,5 +1,4 @@
 # GENERAL
-echo 'Init GENREAL'
 set -x PATH /bin $PATH
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local/opt/openssl/bin $PATH
@@ -11,7 +10,6 @@ function fish_prompt
     powerline-go -error $status -shell bare
 end
 
-echo 'Init GCP'
 # The next line updates PATH for the Google Cloud SDK.
 if test -f ~/google-cloud-sdk/path.fish.inc
     source ~/google-cloud-sdk/path.fish.inc
@@ -23,13 +21,11 @@ if test -f ~/google-cloud-sdk/completion.fish.inc
 end
 
 # GCloud
-echo 'Init GCloud'
 set -x CLOUDSDK_PYTHON (which python)
 set -x CLOUDSDK_BQ_PYTHON (which python)
 set -x CLOUDSDK_PYTHON_SITEPACKAGES 1
 
 # LIB
-echo 'Init LIB'
 set -x LDFLAGS "-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib" "-L/opt/homebrew/opt/openal-soft/lib"
 set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include" "-I/opt/homebrew/opt/openal-soft/include"
 set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig" "/opt/homebrew/opt/openal-soft/lib/pkgconfig"
@@ -49,10 +45,10 @@ set -x CMAKE_PREFIX_PATH $(brew --prefix)
 # Node
 # set -x NODE_OPTIONS --openssl-legacy-provider
 
-eval (/opt/homebrew/bin/mise activate fish)
+# mise is activated in conf.d/mise.fish (loaded before config.fish)
 
 # direnv
-eval (direnv hook fish)
+direnv hook fish | source
 
 # 初期設定時に現在の Python バージョンを環境変数に保存
 function save_python_version

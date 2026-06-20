@@ -1,10 +1,6 @@
 .vscode/*
-!setting.json
+!settings.json
 
 .bin/.config/fish/*
 !*.fish
 !conf.d
-
-.bin/.config/gcloud
-.bin/.config/configstore
-.bin/.config/expressvpn
