@@ -10,38 +10,34 @@ export PS1='\n\[\e[1;31m\]\u \[\e[1;32m\]\W \[\e[1;33m\]\$ \[\e[0m\]'
 export LANG="ja_JP.UTF-8"
 
 # Set brew
-if [ "$(which brew)" == "" ]; then
+if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+BREW_PREFIX="$(brew --prefix 2>/dev/null)"
 
 # Set vscode
-if [ "$(which code)" == "" ]; then
-  export PATH="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin:$PATH"
-fi
-
-# Set Typescript Compiler
-if [ "$(which tsc)" == "" ]; then
-  export PATH="$(npm bin -g):$PATH"
+if ! command -v code >/dev/null 2>&1; then
+  export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 fi
 
 # Set aws-completion
-if [ "$(which aws_completer)" != "" ]; then
+if command -v aws_completer >/dev/null 2>&1; then
   complete -C aws_completer aws
 fi
 
 # Set bash-completion
-if [ -r "/usr/local/etc/profile.d/bash_completion.sh" ]; then
-  source /usr/local/etc/profile.d/bash_completion.sh
+if [ -r "${BREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
+  source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
 fi
 
 # Set git-completion
-if [ -r "/usr/local/etc/bash_completion.d/git-completion.sh" ]; then
-  source /usr/local/etc/bash_completion.d/git-completion.sh
+if [ -r "${BREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]; then
+  source "${BREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
 fi
 
 # Set git-prompt
-if [ -r "/usr/local/etc/bash_completion.d/git-prompt.sh" ]; then
-  source /usr/local/etc/bash_completion.d/git-prompt.sh
+if [ -r "${BREW_PREFIX}/etc/bash_completion.d/git-prompt.sh" ]; then
+  source "${BREW_PREFIX}/etc/bash_completion.d/git-prompt.sh"
 fi
 
 # OS X or Linux
