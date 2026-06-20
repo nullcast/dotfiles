@@ -42,8 +42,14 @@ if ! brew extract --force --version=1.22 leveldb bagonyi/homebrew-formulae; then
   echo "WARN: brew extract(leveldb 1.22) failed. Continue without it."
 fi
 
+# 非公式tap（自作 my/casks・leveldb用 bagonyi）を信頼登録する。
+# Homebrew 6系は信頼されていないtapからの cask/formula 読み込みを拒否するため、
+# これが無いと bundle が untrusted tap で止まる（例: genspark-ai-browser, leveldb@1.22）。
+# まだtapされていなくても trust.json への登録は可能（旧brew/未存在でも || true で継続）。
+brew trust --tap bagonyi/homebrew-formulae || true
+brew trust --tap my/casks || true
+
 # Brewfileは「repoの .Brewfile」を正にする（globalズレ事故を防ぐ）
-ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 brew bundle --verbose --global
 
 brew developer off

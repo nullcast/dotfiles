@@ -1,5 +1,5 @@
 # Do everything.
-all: init link defaults brew anyenv
+all: init link defaults brew
 
 # Set initial preference.
 init:
