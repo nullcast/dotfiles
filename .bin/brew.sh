@@ -85,3 +85,18 @@ EOF
 else
   echo "docker/minikube が未導入なので /etc/resolver はスキップします"
 fi
+
+# --- fish をログインシェルにする（fish は上の brew bundle で導入済み） ---
+FISH_BIN="$(brew --prefix)/bin/fish"
+if [ -x "$FISH_BIN" ]; then
+  # /etc/shells に未登録なら追加（chsh はここに無いシェルを拒否する）
+  if ! grep -qxF "$FISH_BIN" /etc/shells 2>/dev/null; then
+    echo "$FISH_BIN" | sudo tee -a /etc/shells >/dev/null
+  fi
+  # 現在のログインシェルが fish でなければ変更
+  current_shell="$(dscl . -read "$HOME" UserShell 2>/dev/null | awk '{print $2}')"
+  if [ "$current_shell" != "$FISH_BIN" ]; then
+    echo "Setting login shell to fish: $FISH_BIN"
+    chsh -s "$FISH_BIN"
+  fi
+fi
