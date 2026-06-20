@@ -1,25 +1,32 @@
 # dotfiles
 
-&emsp;
+macOS setup: Homebrew apps, fish shell, mise, and system defaults.
 
-## Overview
+## Requirements
 
-This repository contains scripts to set macOS.
-
-&emsp;
-
-## Required
-
-- [macOS](https://www.apple.com/jp/macos/monterey/) - v12.4
-
-&emsp;
+- macOS on Apple Silicon (Homebrew prefix `/opt/homebrew`)
+- Xcode Command Line Tools, Rosetta and Homebrew are bootstrapped by `make init`
 
 ## Install
 
-Set macOS.
+```sh
+git clone git@github.com:nullcast/dotfiles.git
+cd dotfiles
 
-```shell
-$ brew tap-new my/casks
-$ ln -s (brew --repo my/casks)/* .bin/.config/brew
-$ cd ~/dotfiles && make
+# One-time: create the personal cask tap the Brewfile references as `my/casks`
+brew tap-new my/casks
+ln -s "$(brew --repo my/casks)"/* .bin/.config/brew
+
+make    # = init + link + defaults + brew
 ```
+
+Run a single step with e.g. `make brew`.
+
+## Make targets
+
+| target | script | what it does |
+|--------|--------|--------------|
+| `init` | `.bin/init.sh` | install Xcode CLT, Rosetta, Homebrew |
+| `link` | `.bin/link.sh` | symlink dotfiles into `$HOME`; link the managed `~/.config` subdirs (brew, fish, jgit, mise) without turning all of `~/.config` into the repo |
+| `defaults` | `.bin/defaults.sh` | apply macOS system preferences |
+| `brew` | `.bin/brew.sh` | `brew bundle` from `.Brewfile` (trusts the custom taps) |
