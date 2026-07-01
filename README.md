@@ -2,6 +2,8 @@
 
 macOS setup: Homebrew apps, fish shell, mise, and system defaults.
 
+Known issues and improvement roadmap: see [TASKS.md](TASKS.md).
+
 ## Requirements
 
 - macOS on Apple Silicon (Homebrew prefix `/opt/homebrew`)
