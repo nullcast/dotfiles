@@ -1,8 +1,3 @@
-# GENERAL
-set -x PATH /bin $PATH
-set -x PATH /usr/local/bin $PATH
-set -x PATH /usr/local/opt/openssl/bin $PATH
-
 # POWERLINE GO
 function fish_prompt
     # -error: 直前コマンドの終了コードで色などを変える
