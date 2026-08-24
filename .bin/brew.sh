@@ -78,6 +78,11 @@ brew bundle --verbose --global
 
 brew developer off
 
+# git-secrets is installed by the Brewfile above.  Refresh the dedicated
+# template hooks on every run, then register the de-duplicated global AWS rules.
+git secrets --install --force "$HOME/.git-templates/git-secrets"
+git secrets --register-aws --global
+
 # leveldb link（存在する場合だけ）
 if [ -d "/opt/homebrew/Cellar/leveldb@1.22/1.22" ]; then
   sudo ln -nfs /opt/homebrew/Cellar/leveldb@1.22/1.22 /opt/homebrew/opt/leveldb
