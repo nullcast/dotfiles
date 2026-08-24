@@ -15,12 +15,12 @@ Known issues and improvement roadmap: see [TASKS.md](TASKS.md).
 git clone git@github.com:nullcast/dotfiles.git
 cd dotfiles
 
-# One-time: create the personal cask tap the Brewfile references as `my/casks`
-brew tap-new my/casks
-ln -s "$(brew --repo my/casks)"/* .bin/.config/brew
-
 make    # = init + link + defaults + brew
 ```
+
+`make init` installs Homebrew before `make brew` needs it. During the brew
+step, the repository creates `my/casks` when necessary and synchronizes the
+version-controlled personal cask definitions automatically.
 
 Run a single step with e.g. `make brew`.
 
