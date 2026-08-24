@@ -13,7 +13,7 @@ fi
 # Install Rosetta on Apple Silicon (skip if already installed)
 if [ "$(uname -m)" = "arm64" ] && \
 	! /usr/sbin/pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
-	softwareupdate --install-rosetta --agree-to-license
+	sudo softwareupdate --install-rosetta --agree-to-license
 fi
 
 # Install Homebrew (skip if already installed)
