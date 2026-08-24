@@ -20,6 +20,7 @@ jobs:
           shellcheck --severity=error \
             .bin/init.sh .bin/link.sh .bin/defaults.sh .bin/brew.sh \
             tools/*.sh
+          shellcheck --severity=error -s bash .bin/.bash_profile
 
       - name: Check fish syntax
         run: |
