@@ -49,6 +49,18 @@ rollback_config_migration() { # rollback_config_migration <src> <stage> <names..
     return "$failed"
 }
 
+config_symlink_points_to_repo() { # config_symlink_points_to_repo <link> <src>
+    local link_path="$1" src_dir="$2" target target_dir src_real
+
+    target="$(readlink "$link_path")" || return 1
+    if [[ "$target" != /* ]]; then
+        target="$(dirname "$link_path")/$target"
+    fi
+    target_dir="$(cd -P "$target" 2>/dev/null && pwd -P)" || return 1
+    src_real="$(cd -P "$src_dir" 2>/dev/null && pwd -P)" || return 1
+    [[ "$target_dir" == "$src_real" ]]
+}
+
 link_config() {
     local src_dir="$1" dest_dir="$HOME/.config"
 
@@ -56,6 +68,10 @@ link_config() {
     # repo: drop the symlink (the repo data itself is untouched) and move any
     # unmanaged config (credentials etc.) out of the repo into a real ~/.config.
     if [[ -L "$dest_dir" ]]; then
+        if ! config_symlink_points_to_repo "$dest_dir" "$src_dir"; then
+            echo "Refusing to migrate ~/.config symlink owned by another source" >&2
+            return 1
+        fi
         echo "Migrating legacy ~/.config symlink -> real directory"
         local entry name stage_dir legacy_link
         local -a moved=()
