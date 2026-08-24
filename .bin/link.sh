@@ -9,7 +9,17 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_MANAGED=(brew fish jgit mise)
 
 link() { # link <src> <dest>
-    ln -fnsv "$1" "$2"
+    local src="$1" dest="$2" backup
+    if [[ -d "$dest" && ! -L "$dest" ]]; then
+        backup="${dest}.dotfiles-backup"
+        if [[ -e "$backup" || -L "$backup" ]]; then
+            echo "Refusing to replace directory; backup already exists: $backup" >&2
+            return 1
+        fi
+        echo "Back up existing directory: $dest -> $backup"
+        mv "$dest" "$backup"
+    fi
+    ln -fnsv "$src" "$dest"
 }
 
 is_managed() {
