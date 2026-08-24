@@ -5,6 +5,8 @@ fi
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if [ "$(uname)" != "Darwin" ] ; then
@@ -37,12 +39,34 @@ brew tap bagonyi/homebrew-formulae
 
 brew developer on
 
+# Keep personal casks reproducible from this repository.  The tap itself is a
+# Homebrew-managed Git directory, so copy only the version-controlled cask
+# definitions after creating the tap on a new machine.
+PERSONAL_TAP="my/casks"
+PERSONAL_TAP_SOURCE="$SCRIPT_DIR/.config/brew/homebrew-casks"
+if ! brew tap | grep -qxF "$PERSONAL_TAP"; then
+  brew tap-new "$PERSONAL_TAP"
+fi
+PERSONAL_TAP_REPO="$(brew --repo "$PERSONAL_TAP")"
+personal_casks=("$PERSONAL_TAP_SOURCE"/Casks/*.rb)
+if [ ! -e "${personal_casks[0]}" ]; then
+  echo "No version-controlled personal casks found in $PERSONAL_TAP_SOURCE" >&2
+  exit 1
+fi
+install -d "$PERSONAL_TAP_REPO/Casks"
+for source in "${personal_casks[@]}"; do
+  target="$PERSONAL_TAP_REPO/Casks/$(basename "$source")"
+  if ! cmp -s "$source" "$target"; then
+    install -m 0644 "$source" "$target"
+  fi
+done
+
 # leveldb@1.22 を確実に用意（extractがダメなら bundle だけでも進める）
 if ! brew extract --force --version=1.22 leveldb bagonyi/homebrew-formulae; then
   echo "WARN: brew extract(leveldb 1.22) failed. Continue without it."
 fi
 
-# 非公式tap（自作 my/casks・leveldb用 bagonyi）を信頼登録する。
+# 非公式tap（repoから同期した my/casks・leveldb用 bagonyi）を信頼登録する。
 # Homebrew 6系は信頼されていないtapからの cask/formula 読み込みを拒否するため、
 # これが無いと bundle が untrusted tap で止まる（例: genspark-ai-browser, leveldb@1.22）。
 # まだtapされていなくても trust.json への登録は可能（旧brew/未存在でも || true で継続）。
