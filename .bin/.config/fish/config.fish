@@ -60,7 +60,7 @@ save_python_version
 # update_mise_conda.fish を読み込む
 source ~/.config/fish/.update_mise_conda.fish
 
-function check_and_update_conda_version --on-event fish_prompt
+function check_and_update_conda_version --on-variable PWD
     set -l current_python_version (mise current | grep 'python' | awk '{print $2}')
 
     # 現在の Python バージョンと以前のバージョンを比較
@@ -86,4 +86,3 @@ else
     end
 end
 # <<< conda initialize <<<
-
