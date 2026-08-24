@@ -103,7 +103,9 @@ link_config() {
     mkdir -p "$dest_dir"
     local name
     for name in "${CONFIG_MANAGED[@]}"; do
-        [[ -e "$src_dir/$name" ]] && link "$src_dir/$name" "$dest_dir/$name"
+        if [[ -e "$src_dir/$name" ]]; then
+            link "$src_dir/$name" "$dest_dir/$name"
+        fi
     done
 }
 
