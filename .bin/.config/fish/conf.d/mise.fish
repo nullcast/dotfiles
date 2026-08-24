@@ -1,8 +1,16 @@
 /opt/homebrew/bin/mise activate fish | source
 
-set FORGE_PATH (dirname (dirname (which conda)))
+set -e FORGE_PATH
+set -l conda_path (command -s conda)
+if set -q conda_path[1]
+  set -g FORGE_PATH (dirname (dirname $conda_path))
+end
 
 function remove_path
+  if not set -q argv[1]
+    return 0
+  end
+
   set -l target_path $argv[1]
   set -l new_path
 
@@ -17,7 +25,7 @@ end
 
 function conda_not_found
   # Conda の実行ファイルパスを取得してクリア
-  if set -q FORGE_PATH
+  if set -q FORGE_PATH[1]
     remove_path $FORGE_PATH/bin
     remove_path $FORGE_PATH/condabin
     set -e FORGE_PATH
