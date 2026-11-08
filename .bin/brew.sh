@@ -18,7 +18,8 @@ fi
 sudo -v
 ( while true; do sudo -n true; sleep 60; done ) 2>/dev/null &
 SUDO_KEEPALIVE_PID=$!
-trap 'kill $SUDO_KEEPALIVE_PID 2>/dev/null || true' EXIT
+# 途中で失敗しても developer モードを戻す
+trap 'kill $SUDO_KEEPALIVE_PID 2>/dev/null || true; brew developer off >/dev/null 2>&1 || true' EXIT
 # ----------------------------------
 
 # Rosetta: already installedならスキップ（毎回走らせない）
@@ -31,8 +32,8 @@ brew update
 # タップの破損（origin無し等）を修復
 brew tap --repair
 
-# extractを安定させる（APIモードを切る + coreを--force）
-export HOMEBREW_NO_INSTALL_FROM_API=1
+# brew extract には homebrew/core の Git 履歴が必要なので core を --force で tap する。
+# APIモードを切るのは extract の時だけ（bundle まで非APIモードにすると遅くなる）。
 brew tap --force homebrew/core
 brew tap homebrew/cask
 brew tap bagonyi/homebrew-formulae
@@ -62,7 +63,7 @@ for source in "${personal_casks[@]}"; do
 done
 
 # leveldb@1.22 を確実に用意（extractがダメなら bundle だけでも進める）
-if ! brew extract --force --version=1.22 leveldb bagonyi/homebrew-formulae; then
+if ! HOMEBREW_NO_INSTALL_FROM_API=1 brew extract --force --version=1.22 leveldb bagonyi/homebrew-formulae; then
   echo "WARN: brew extract(leveldb 1.22) failed. Continue without it."
 fi
 

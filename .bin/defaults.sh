@@ -53,15 +53,20 @@ defaults write com.apple.finder ShowPathbar -bool true
 #
 # ====================
 
-# Display date, day, and time in the menu bar
-defaults write com.apple.menuextra.clock DateFormat -string 'EEE d MMM HH:mm'
+# Display date, day, and 24-hour time in the menu bar
+# (macOS 11+ ignores the old DateFormat key; these are the current ones)
+defaults write com.apple.menuextra.clock ShowDate -int 1
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true
+defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
 
-# Display battery level in the menu bar
-defaults write com.apple.menuextra.battery ShowPercent -string "YES"
+# Display battery percentage in the menu bar
+# (macOS 11+ moved this from com.apple.menuextra.battery to Control Center)
+defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
 
 
 for app in "Dock" \
 	"Finder" \
-	"SystemUIServer"; do
+	"SystemUIServer" \
+	"ControlCenter"; do
 	killall "${app}" &> /dev/null
 done

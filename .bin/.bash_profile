@@ -1,5 +1,6 @@
 # Get the aliases and functions
 if [ -r ~/.bashrc ]; then
+  # shellcheck source=/dev/null
   source ~/.bashrc
 fi
 
@@ -50,23 +51,21 @@ case $(uname -a) in
 esac
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/mkurosawa/google-cloud-sdk/path.bash.inc' ]; then . '/Users/mkurosawa/google-cloud-sdk/path.bash.inc'; fi
+# shellcheck source=/dev/null
+if [ -f "$HOME/google-cloud-sdk/path.bash.inc" ]; then . "$HOME/google-cloud-sdk/path.bash.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/mkurosawa/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/mkurosawa/google-cloud-sdk/completion.bash.inc'; fi
+# shellcheck source=/dev/null
+if [ -f "$HOME/google-cloud-sdk/completion.bash.inc" ]; then . "$HOME/google-cloud-sdk/completion.bash.inc"; fi
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/profile.d/conda.sh" ]; then
-        . "/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/mkurosawa/.local/share/mise/installs/python/miniforge3-24.3.0-0/bin:$PATH"
-    fi
+# conda: mise で入れた miniforge があれば使う（バージョンやユーザー名は決め打ちしない）
+_conda=""
+for _c in "$HOME"/.local/share/mise/installs/python/miniforge3-*/bin/conda; do
+  [ -x "$_c" ] && _conda="$_c"
+done
+if [ -n "$_conda" ]; then
+  __conda_setup="$("$_conda" shell.bash hook 2>/dev/null)" && eval "$__conda_setup"
+  unset __conda_setup
 fi
-unset __conda_setup
-# <<< conda initialize <<<
+unset _c _conda
 

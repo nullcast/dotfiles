@@ -34,7 +34,7 @@ function conda_not_found
 end
 
 # mise current の出力から Conda ベースの Python バージョンを抽出
-set conda_version (mise current | grep 'python' | string match -r '.*anaconda.*|.*miniforge.*' | awk '{print $2}')
+set -l conda_version (mise current | grep 'python' | string match -r '.*anaconda.*|.*miniforge.*' | awk '{print $2}')
 
 if not set -q conda_version[1]
   conda_not_found
