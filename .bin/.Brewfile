@@ -71,7 +71,7 @@ cask "microsoft-powerpoint"
 #cask "temurin@8"
 cask "adobe-creative-cloud"
 #cask "tableau"
-cask "chromium"
+# chromium: Homebrew で disabled（fails_gatekeeper_check）。Puppeteer は Google Chrome を使う
 #cask "tableau-prep"
 cask "balsamiq-wireframes"
 cask "postman"

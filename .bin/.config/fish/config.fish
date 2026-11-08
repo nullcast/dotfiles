@@ -41,9 +41,12 @@ contains -- $brew_prefix/include $CPATH; or set -gx CPATH $CPATH $brew_prefix/in
 
 # Puppeteer
 set -gx PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# chromium cask は Homebrew で disabled になったので、無ければ Google Chrome を使う
 set -l chromium_bin (command -s chromium)
 if set -q chromium_bin[1]
     set -gx PUPPETEER_EXECUTABLE_PATH $chromium_bin[1]
+else if test -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    set -gx PUPPETEER_EXECUTABLE_PATH "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 end
 
 # Mysql client（-a: 末尾に追加、既にあれば何もしない）
