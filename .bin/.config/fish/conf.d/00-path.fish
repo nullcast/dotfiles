@@ -4,6 +4,5 @@ fish_add_path -g \
     /opt/homebrew/bin \
     ~/.local/bin \
     ~/.local/share/mise/bin \
-    /usr/local/opt/openssl/bin \
     /usr/local/bin \
     /bin

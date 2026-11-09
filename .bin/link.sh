@@ -6,7 +6,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Subdirectories under .config that ARE managed by this repo (version-controlled).
 # Everything else under ~/.config (gcloud, firebase, ... credentials) must live
 # in the REAL ~/.config — never inside the repo — so it is never symlinked in.
-CONFIG_MANAGED=(brew fish jgit mise)
+CONFIG_MANAGED=(brew fish mise)
+# Formerly managed subdirectories. A dangling ~/.config/<name> symlink that still
+# points into the repo is removed so the owning tool can recreate it locally.
+CONFIG_RETIRED=(jgit)
 
 link() { # link <src> <dest>
     local src="$1" dest="$2" backup
@@ -118,6 +121,13 @@ link_config() {
 
     mkdir -p "$dest_dir"
     local name
+    for name in "${CONFIG_RETIRED[@]}"; do
+        if [[ -L "$dest_dir/$name" && ! -e "$dest_dir/$name" \
+              && "$(readlink "$dest_dir/$name")" == "$src_dir/$name" ]]; then
+            echo "Remove retired config link: $dest_dir/$name"
+            rm "$dest_dir/$name"
+        fi
+    done
     for name in "${CONFIG_MANAGED[@]}"; do
         if [[ -e "$src_dir/$name" ]]; then
             link "$src_dir/$name" "$dest_dir/$name"
@@ -132,3 +142,10 @@ for dotfile in "${SCRIPT_DIR}"/.??* ; do
         *) link "$dotfile" "$HOME/$(basename "$dotfile")" ;;
     esac
 done
+
+# .gitconfig points commit.template at ~/.st-commit-msg. git commit aborts when
+# that file is missing, so make sure it exists (an empty template is harmless).
+if [[ ! -e "$HOME/.st-commit-msg" ]]; then
+    echo "Create empty commit template: $HOME/.st-commit-msg"
+    : > "$HOME/.st-commit-msg"
+fi

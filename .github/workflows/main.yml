@@ -14,13 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint shell scripts (errors only)
+      - name: Lint shell scripts
         run: |
           brew install shellcheck
-          shellcheck --severity=error \
+          shellcheck --severity=warning \
             .bin/init.sh .bin/link.sh .bin/defaults.sh .bin/brew.sh \
             tools/*.sh
-          shellcheck --severity=error -s bash .bin/.bash_profile
+          shellcheck --severity=warning -s bash .bin/.bash_profile
 
       - name: Check fish syntax
         run: |
@@ -31,3 +31,23 @@ jobs:
             fish --no-execute "$f" || status=1
           done < <(find .bin/.config/fish -name '*.fish')
           exit $status
+
+      # Catch typos and formulae/casks that Homebrew has removed or disabled
+      # before `make brew` hits them on a real machine. Entries from custom taps
+      # (my/casks, bagonyi) are skipped: they are not in the public API.
+      - name: Check Brewfile entries exist
+        run: |
+          skip='^(leveldb@1\.22|genspark-ai-browser)$'
+          formulae=$(sed -nE 's/^brew "([^"]+)".*/\1/p' .bin/.Brewfile | grep -Ev "$skip")
+          casks=$(sed -nE 's/^cask "([^"]+)".*/\1/p' .bin/.Brewfile | grep -Ev "$skip")
+          # shellcheck disable=SC2086
+          brew info --json=v2 --formula $formulae > formulae.json
+          # shellcheck disable=SC2086
+          brew info --json=v2 --cask $casks > casks.json
+          jq -r '.formulae[] | select(.deprecated) | "::warning::formula \(.name) is deprecated: \(.deprecation_reason)"' formulae.json
+          jq -r '.casks[] | select(.deprecated) | "::warning::cask \(.token) is deprecated: \(.deprecation_reason)"' casks.json
+          disabled=$(jq -r '.formulae[] | select(.disabled) | "formula \(.name): \(.disable_reason)"' formulae.json
+                     jq -r '.casks[] | select(.disabled) | "cask \(.token): \(.disable_reason)"' casks.json)
+          if [ -n "$disabled" ]; then
+            echo "Disabled Brewfile entries:"; echo "$disabled"; exit 1
+          fi

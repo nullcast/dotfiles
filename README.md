@@ -29,6 +29,6 @@ Run a single step with e.g. `make brew`.
 | target | script | what it does |
 |--------|--------|--------------|
 | `init` | `.bin/init.sh` | install Xcode CLT, Rosetta, Homebrew |
-| `link` | `.bin/link.sh` | symlink dotfiles into `$HOME`; link the managed `~/.config` subdirs (brew, fish, jgit, mise) without turning all of `~/.config` into the repo |
+| `link` | `.bin/link.sh` | symlink dotfiles into `$HOME`; link the managed `~/.config` subdirs (brew, fish, mise) without turning all of `~/.config` into the repo |
 | `defaults` | `.bin/defaults.sh` | apply macOS system preferences |
 | `brew` | `.bin/brew.sh` | `brew bundle` from `.Brewfile` (trusts the custom taps) |

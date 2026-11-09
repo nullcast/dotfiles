@@ -5,6 +5,8 @@ function fish_prompt
     powerline-go -error $status -shell bare
 end
 
+set -l brew_prefix (brew --prefix)
+
 # The next line updates PATH for the Google Cloud SDK.
 if test -f ~/google-cloud-sdk/path.fish.inc
     source ~/google-cloud-sdk/path.fish.inc
@@ -15,27 +17,43 @@ if test -f ~/google-cloud-sdk/completion.fish.inc
     source ~/google-cloud-sdk/completion.fish.inc
 end
 
-# GCloud
-set -x CLOUDSDK_PYTHON (which python)
-set -x CLOUDSDK_BQ_PYTHON (which python)
-set -x CLOUDSDK_PYTHON_SITEPACKAGES 1
+# GCloud: mise の Python を使う（Python が切り替わったら update_mise_conda から再設定）
+function refresh_cloudsdk_python
+    set -l py (command -s python)
+    if set -q py[1]
+        set -gx CLOUDSDK_PYTHON $py[1]
+        set -gx CLOUDSDK_BQ_PYTHON $py[1]
+    else
+        set -e CLOUDSDK_PYTHON
+        set -e CLOUDSDK_BQ_PYTHON
+    end
+end
+refresh_cloudsdk_python
+set -gx CLOUDSDK_PYTHON_SITEPACKAGES 1
 
-# LIB
-set -x LDFLAGS "-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib" "-L/opt/homebrew/opt/openal-soft/lib"
-set -x CPPFLAGS "-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include" "-I/opt/homebrew/opt/openal-soft/include"
-set -x PKG_CONFIG_PATH "/usr/local/opt/zlib/lib/pkgconfig" "/opt/homebrew/opt/openal-soft/lib/pkgconfig"
-set -x LIBRARY_PATH "$LIBRARY_PATH:"(brew --prefix)"/lib"
-set -x CPATH "$CPATH:"(brew --prefix)"/include"
+# LIB (Apple Silicon の Homebrew 配下だけを見る)
+set -gx LDFLAGS "-L$brew_prefix/opt/openal-soft/lib"
+set -gx CPPFLAGS "-I$brew_prefix/opt/openal-soft/include"
+set -gx PKG_CONFIG_PATH "$brew_prefix/opt/openal-soft/lib/pkgconfig"
+# *PATH 変数は fish ではリスト。空要素（= カレントディレクトリ）を作らず、重複も足さない
+contains -- $brew_prefix/lib $LIBRARY_PATH; or set -gx LIBRARY_PATH $LIBRARY_PATH $brew_prefix/lib
+contains -- $brew_prefix/include $CPATH; or set -gx CPATH $CPATH $brew_prefix/include
 
-# Pippetter
-set -x PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-set -x PUPPETEER_EXECUTABLE_PATH (which chromium)
+# Puppeteer
+set -gx PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# chromium cask は Homebrew で disabled になったので、無ければ Google Chrome を使う
+set -l chromium_bin (command -s chromium)
+if set -q chromium_bin[1]
+    set -gx PUPPETEER_EXECUTABLE_PATH $chromium_bin[1]
+else if test -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    set -gx PUPPETEER_EXECUTABLE_PATH "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+end
 
-# Mysql client 
-set -x PATH $PATH /opt/homebrew/opt/mysql-client/bin
+# Mysql client（-a: 末尾に追加、既にあれば何もしない）
+fish_add_path -gaP $brew_prefix/opt/mysql-client/bin
 
 # CMake
-set -x CMAKE_PREFIX_PATH $(brew --prefix)
+set -gx CMAKE_PREFIX_PATH $brew_prefix
 
 # Node
 # set -x NODE_OPTIONS --openssl-legacy-provider
